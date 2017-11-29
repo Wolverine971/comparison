@@ -1,0 +1,225 @@
+<html>
+
+<head>
+    <title>JQuery Comparison</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css">
+</head>
+
+<body>
+    <nav class="navbar navbar-toggleable-md navbar-light bg-faded">
+
+        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav"
+            aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <a class="navbar-brand" href="#">
+            <img src="https://d30y9cdsu7xlg0.cloudfront.net/png/67107-200.png" width="30" height="30" alt="">
+        </a>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item active">
+                    <a class="nav-link" href="\jQueryDemo.html">JQuery
+                        <span class="sr-only">(current)</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="\AngularJSDemo.html">AngularJS</a>
+                </li>
+                <li class="nav-item" style="position:relative; left:20%">
+                    <a class="nav-link" href="\AngularJSplay.html">AngularJS Mess</a>
+                </li>
+                <li class="nav-item" style="position:relative; left:20%">
+                    <a class="nav-link disabled" href="#">jQuery Mess</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div style="padding:20px">
+        <p>JQuery Demo</p>
+
+
+        <form>
+            <div class="form-group">
+                <label for="userName">User Name</label>
+                <input type="userName" class="form-control" id="userName" aria-describedby="userNameHelp" placeholder="User Name">
+                <small id="userNameHelp" class="form-text text-muted">We'll never share your userName with anyone else.</small>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" class="form-control" id="password" placeholder="Password">
+            </div>
+            <button type="button" class="btn btn-primary" id="myBtn">Submit</button>
+            <button type="button" class="btn btn-primary" id="myBtn2">Get Users</button>
+
+        </form>
+        <div>
+            <p id="userNameHere"></p>
+            <p id="passwordHere"></p>
+        </div>
+        <div card="container card">
+            <p>List of New Users</p>
+            <div class="row" id="users">
+            </div>
+
+        </div>
+
+        <div card="container card">
+            <p>List of Users From Server</p>
+            <div class="row" id="serverUsers-list">
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"></script>
+
+    <script>
+        var serverUsers = [];
+
+        $(document).ready(function () {
+            $("#myBtn").on("click", newUserHandler);
+            $("#myBtn2").on("click", getUsersCall);
+        });
+
+        var readValues = function () {
+            var userName = $("#userName").val();
+            var password = $("#password").val();
+
+            var data = {
+                userNameD: userName,
+                passwordD: password
+            }
+            return data;
+        }
+
+        var writeValues = function (data) {
+            var template = loadTemplate();
+            template.find("#userNameHere").text(data.userNameD);
+            template.find("#passwordHere").text(data.passwordD);
+            $('#users').prepend(template);
+
+
+        }
+
+        var newUserHandler = function () {
+            event.preventDefault();
+            var otherData = readValues();
+            writeValues(otherData);
+        }
+
+        var loadTemplate = function () {
+            var templateHTML = $("#userTemplate").html();
+            // console.log(templateHTML);
+            var template = $(templateHTML); //makes a DOM object to use in jquery
+            console.log("loadtemplate worked")
+            return template;
+        }
+
+        var loadSUTemplate = function () {
+            var templateHTML = $("#sUTemplate").html();
+            var template = $(templateHTML); //makes a DOM object to use in jquery
+            console.log("server User template worked")
+            return template;
+        }
+
+        var getUsersCall = function () {
+            event.preventDefault();
+            var url = "https://reqres.in/api/users?page=3";
+            var settings = {
+                type: "GET",
+                success: usersSuccess,
+                error: usersError
+            }
+            $.ajax(url, settings);
+        }
+
+        var usersError = function (errorThrown) {
+            console.log(errorThrown);
+        }
+
+        var usersSuccess = function (dataRecieved) {
+            for (var i = 0; i < dataRecieved.data.length; i++) {
+                setValues(dataRecieved.data[i]);
+                serverUsers.push(dataRecieved.data[i]);
+            }
+        }
+        var setValues = function (data) {
+            var template = loadSUTemplate();
+            template.find("#first_name").text(data.first_name);
+            template.find("#last_name").text(data.last_name);
+            template.find("#name").text(data.first_name + " " + data.last_name);
+            template.find("#avatar").attr("src", data.avatar);
+            $("#serverUsers-list").prepend(template);
+        }
+    </script>
+    <script type="text/html" id="userTemplate">
+        <!-- this is like a hidden thingy-->
+        <div class="card" style="width: 20rem;">
+            <div class="card-body mediaclearfix">
+                <div class="card-avatar media-left">
+                    <img src="https://i.pinimg.com/236x/fb/92/47/fb92472a9d2939e4f1d51b4adc10333e--raccoon-illustration-graphic-illustration.jpg"
+                        alt="avatar" id="avatar" style="height: 40px">
+                    <span></span>
+                </div>
+                <div class="card-content media-body clearfix">
+                    <label>User Name</label>
+                    <h3 class="media-heading" id="userNameHere">User Name</h3>
+
+                    <div class="card-meta">
+                        <label>Password</label>
+                        <p id="passwordHere">Lorem ipsum dolor </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+    </script>
+
+    <script type="text/html" id="sUTemplate">
+        <!-- this is like a hidden thingy-->
+        <div class="card" style="width: 20rem;">
+            <div class="card-body mediaclearfix">
+                <div class="card-avatar media-left">
+                    <img src="" alt="avatar" id="avatar" style="height: 40px">
+                    <span></span>
+                </div>
+                <div class="card-content media-body clearfix">
+                    <div>
+                        <h3>First Name:
+                            <span id="first_name"></span>
+                        </h3>
+                        <h3>Last Name:
+                            <span id="last_name"></span>
+                        </h3>
+                        <h3>Name:
+                            <span id="name"></span>
+                        </h3>
+
+                    </div>
+
+                    <span id="time">Today, 12:31</span>
+
+                    <div class="card-meta" id="status">
+                        <label>Status</label>
+                        <p>I am from the api server </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,139 @@
+<html>
+
+<head>
+    <title>AngularJS Mess</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css">
+</head>
+
+<body ng-app="djApp">
+    <nav class="navbar navbar-toggleable-md navbar-light bg-faded">
+
+        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav"
+            aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <a class="navbar-brand" href="#">
+            <img src="https://d30y9cdsu7xlg0.cloudfront.net/png/67107-200.png" width="30" height="30" alt="">
+        </a>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="\jQueryDemo.html">JQuery</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="\AngularJSDemo.html">AngularJS</a>
+                </li>
+                <li class="nav-item active" style="position:relative; left:20%">
+                    <a class="nav-link" href="\AngularJSplay.html">AngularJS Mess
+                        <span class="sr-only">(current)</span>
+                    </a>
+                </li>
+                <li class="nav-item" style="position:relative; left:20%">
+                    <a class="nav-link disabled" href="#">jQuery Mess</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+
+    <div style="padding:20px" ng-controller="DJController as dj">
+        <p>AngularJS Mess</p>
+        <div class="container">
+
+            <input type="text" ng-model="dj.input"></input>
+
+            <input>{{dj.input}}</input>
+
+            <br>
+            <br>
+
+            <input ng-model="dj.change"></input>
+
+            <input ng-model="dj.change"></input>
+
+
+
+            <div class="float">
+                <form class="form-inline">
+                    <label class="sr-only" for="inlineFormInput">Name</label>
+                    <input type="text" class="form-control mb-2 mr-sm-2 mb-sm-0" style="color:blue; position: relative" ng-style="{'left': dj.moveOva }"
+                        placeholder="Jane Doe">
+
+                    <label class="sr-only" for="inlineFormInputGroup">Username</label>
+                    <div class="input-group mb-2 mr-sm-2 mb-sm-0">
+                        <div class="input-group-addon">@</div>
+                        <input type="text" class="form-control" id="inlineFormInputGroup" ng-click="dj.move()" placeholder="Username">
+                    </div>
+
+                    <div class="form-check mb-2 mr-sm-2 mb-sm-0">
+                        <label class="form-check-label">
+                            <input class="form-check-input" ng-model="dj.check" type="checkbox"> Remember me
+                        </label>
+                        <p ng-show="dj.check">not gonna remeber ya</p>
+                    </div>
+
+
+                    <button type="btn" ng-click="dj.animate()" class="btn btn-primary">Submit</button>
+                </form>
+                <p style="color:green" ng-style="{'font-size': dj.size }">me</p>
+                <!-- <p style="color:blue; position: relative" ng-style="{'left': dj.moveOva }">you</p> -->
+
+            </div>
+        </div>
+
+
+    </div>
+
+
+    <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.5/angular.min.js"></script>
+
+    <script>
+        (function () {
+            'use strict';
+            angular
+                .module('djApp', []);
+        })();
+    </script>
+    <script>
+        (function () {
+            'use strict';
+            angular
+                .module('djApp')
+                .controller('DJController', djController);
+
+            djController.$inject = [];
+
+            function djController() {
+                var vm = this;
+                vm.animate = _animate;
+                vm.size = 20;
+                vm.move = _move;
+                vm.moveOva = 20;
+
+                function _animate() {
+                    vm.size += 10;
+                }
+
+                function _move() {
+                    vm.moveOva += 10;
+                }
+            }
+
+
+        })();
+    </script>
+
+
+
+
+
+
+</body>
+
+
+
+</html>
